@@ -1,0 +1,128 @@
+{{ define "edit_service" }}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Form Validation</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard/">Dashboard</a></li>
+          <li class="breadcrumb-item">Service</li>
+          <li class="breadcrumb-item active">Add</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-sm-12">
+            {{ if .successMessage }}                             
+                <div class="alert alert-success alert-dismissible alert-label-icon label-arrow fade show" role="alert">
+                    <i class="mdi mdi-check-all label-icon"></i><strong>Success</strong> {{ .successMessage.message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+                <script>
+                    $(document).ready(function() {
+                        // Close the alert on click
+                        $(".alert").on("click", function() {
+                            $(this).alert('close');
+                        });
+
+                        // Close the alert after 3 seconds
+                        setTimeout(function() {
+                            $(".alert").alert('close');
+                        }, 5000);
+                    });
+                </script>                       
+            {{ end }}
+        </div>
+        
+
+        <div class="col-sm-12">
+          <div class="card p-3">
+            <div class="card-header">
+                <h5 class="card-title">Add Service Form</h5>
+            </div>
+            <div class="card-body p-4">             
+              
+              <!-- Custom Styled Validation -->
+              <form class="row needs-validation" method="post" action="/service/update/{{ .Service.Slug }}/" enctype="multipart/form-data" novalidate>
+                <div class="col-12 p-3">
+                    <div class="form-group">
+                      <div class="form-check">
+                          <input class="form-check-input" name="status" type="checkbox" {{ if .Service.Status }}checked{{ end }} id="invalidCheck">
+                          <label class="form-check-label fw-bold" for="invalidCheck">
+                            Status:
+                          </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 p-3">
+                  <div class="form-group">
+                    <label for="validationCustom01" class="form-label fw-bold">Service Name:</label>
+                    <input type="text" name="name" class="form-control" id="validationCustom01" value="{{ .Service.Name }}" placeholder="Enter service name" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 p-3">
+                  <div class="form-group">
+                    <label for="validationCustom02" class="form-label fw-bold">Price:</label>
+                    <input type="number" name="price" value="{{ .Service.Price }}" class="form-control" id="validationCustom02" placeholder="enter price" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-sm-6 p-3">
+                    <div class="form-group">
+                        <label for="validationCustomUsername" class="form-label fw-bold">Image:</label>
+                        <div class="input-group has-validation">
+                            <input type="file" name="image" class="form-control" id="validationCustomUsername">
+                            <div class="invalid-feedback">
+                                Please choose service image
+                            </div>
+                        </div>
+                        {{ if .Service.ServiceImage }}
+                            <div>
+                                <p>Current Image:</p>
+                                <img src="{{ .Service.ServiceImage}}" alt="Current Image" width="50" height="20" class="img-fluid">
+                            </div>
+                        {{ end }}
+                        
+                    </div>
+                </div>
+                
+                <div class="col-sm-12 p-3">
+                  <div class="form-group">
+                    <label for="validationCustom03" class="form-label fw-bold">Description:</label>
+                    <textarea class="form-control" name="description" id="validationCustom03" rows="4">{{ .Service.Description }}</textarea>
+                    <div class="invalid-feedback">
+                        Please enter sevice description
+                    </div>
+                  </div>
+                </div>
+                
+
+                <div class="card-footer">
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Submit form</button>
+                    </div>
+                </div>
+                
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main><!-- End #main -->
+
+{{ end }}  

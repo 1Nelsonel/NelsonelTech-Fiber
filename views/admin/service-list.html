@@ -1,0 +1,111 @@
+{{ define "list_services" }}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Services</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard/">Dashboard</a></li>
+          <li class="breadcrumb-item">Services</li>
+          <li class="breadcrumb-item active">List</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-sm-12">
+          {{ if .successMessage }}                             
+              <div class="alert alert-success alert-dismissible alert-label-icon label-arrow fade show" role="alert">
+                  <i class="mdi mdi-check-all label-icon"></i><strong>Success</strong> {{ .successMessage.message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+
+              <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+              <script>
+                  $(document).ready(function() {
+                      // Close the alert on click
+                      $(".alert").on("click", function() {
+                          $(this).alert('close');
+                      });
+
+                      // Close the alert after 3 seconds
+                      setTimeout(function() {
+                          $(".alert").alert('close');
+                      }, 5000);
+                  });
+              </script>                       
+          {{ end }}
+        </div>
+        <div class="col-lg-12">
+          <div class="card p-3">
+            <div class="card-header ">            
+              <h5 class="card-title">Services List</h5>              
+            </div>
+
+            <div class="card-body table-responsive">              
+              <!-- Table with stripped rows -->
+              <table class="table datatable table-sm table-wrap table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name.</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Updated</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ range .Services }}
+                  <tr class="service-row">
+                    <td class="row-counter" id="RowCounter"></td>
+                    <td>{{ .Name}}</td>
+                    <td>{{ .Price}}</td>
+                    <td>
+                      <input class="form-check-input" disabled type="checkbox" {{ if .Status }}checked{{ end }}>
+                    </td>                    
+                    <td>{{ .CreatedAt}}</td>
+                    <td class="d-flex">
+                      <a href="/service/edit/{{ .Slug }}/" class="p-2">
+                        <i class="bi bi-pen text-success"></i>
+                      </a>
+                      
+                      <form action="/service/delete/{{ .Slug }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="btn" type="submit">
+                            <i class="bi bi-trash text-danger"></i>
+                        </button>
+                      </form>
+                     
+
+                    </td>
+                  </tr>
+                  {{ end }}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+</main>
+
+<!-- Add this script tag before your custom script -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Update row counter for each row
+    $(".service-row").each(function(index) {
+        $(this).find(".row-counter").text(index + 1);
+    });
+  });
+</script>
+
+{{ end }}
